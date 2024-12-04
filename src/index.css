@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure fonts are loaded */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --dark-purple: #160f29;
+    --dark-cyan: #368f8b;
+    --caribbean-current: #246a73;
+    --celadon: #acf7c1;
+    --seasalt: #fcfafa;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans font-normal text-seasalt bg-gradient-to-br from-dark-purple to-dark-cyan min-h-screen;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-light;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 mx-5 bg-celadon text-dark-purple rounded-lg font-medium 
+           transition-all duration-300 hover:bg-celadon hover:text-dark-purple
+           transform hover:scale-105 focus:outline-none focus:ring-2 
+           focus:ring-celadon focus:ring-opacity-50;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 mx-5 border-2 border-seasalt text-seasalt rounded-lg font-medium
+           transition-all duration-300 hover:bg-seasalt hover:text-dark-purple
+           transform hover:scale-105 focus:outline-none focus:ring-2
+           focus:ring-seasalt focus:ring-opacity-50;
+  }
+
+  .highlight-text {
+    @apply font-bold relative;
+    background: linear-gradient(120deg, var(--celadon) 0%, var(--caribbean-current) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .pricing-card {
+    @apply relative overflow-hidden transition-all duration-500 hover:shadow-lg;
+  }
+
+  .pricing-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  }
+
+  .pricing-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .pricing-card.selected {
+    @apply transform scale-105 shadow-2xl border-2 border-caribbean-current;
+  }
+
+  .pricing-header {
+    @apply relative overflow-hidden rounded-t-2xl p-8 text-seasalt;
+  }
+
+  .pricing-button {
+    @apply w-full py-3 px-6 rounded-lg font-medium border-2 transition-all duration-300;
+  }
+
+  .pricing-button-default {
+    @apply bg-transparent text-current;
+  }
+
+  .pricing-button-selected {
+    @apply text-seasalt;
+  }
+  
+  .auth-modal {
+    @apply fixed inset-0 bg-dark-purple/80 backdrop-blur-sm z-50 flex items-center justify-center;
+  }
+  
+  .auth-modal-content {
+    @apply w-full max-w-[800px] h-[600px] bg-seasalt rounded-2xl shadow-2xl overflow-hidden;
+  }
+
+  .pricing-header::after {
+    content: '';
+    @apply absolute inset-0 opacity-20;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.3) 0%, transparent 70%);
+  }
+
+  @keyframes wave {
+    0% {
+      background-position-x: 0;
+    }
+    100% {
+      background-position-x: 2400px;
+    }
+  }
+
+  @keyframes wave2 {
+    0% {
+      background-position-x: 0;
+    }
+    100% {
+      background-position-x: -2400px;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -100% 50%;
+    }
+    50% {
+      background-position: 200% 50%;
+    }
+    100% {
+      background-position: -100% 50%;
+    }
+  }
+}
