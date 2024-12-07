@@ -38,11 +38,27 @@ const ScrapingForm: React.FC = () => {
   const [city, setCity] = React.useState('');
   const [results, setResults] = React.useState(100);
   const [currentStep, setCurrentStep] = React.useState(1);
+  const [locationSelected, setLocationSelected] = React.useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleContinue = () => {
+    if (currentStep < 4) {
+      if (currentStep === 1 && keywords.some(k => k.trim().length > 0)) {
+        setCurrentStep(2);
+      } else if (currentStep === 2 && locationSelected && Boolean(country.trim()) && Boolean(city.trim())) {
+        setCurrentStep(3);
+      } else if (currentStep === 3 && results >= 100) {
+        handleFormSubmission();
+      }
+    }
+  };
+
+  const handleFormSubmission = () => {
     console.log({ keywords, country, city, results });
-    setCurrentStep(4); // Move to download step
+    setCurrentStep(4);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
   const renderStepContent = () => {
@@ -56,6 +72,7 @@ const ScrapingForm: React.FC = () => {
             setCountry={setCountry}
             city={city}
             setCity={setCity}
+            onLocationSelect={() => setLocationSelected(true)}
           />
         );
       case 3:
@@ -72,7 +89,7 @@ const ScrapingForm: React.FC = () => {
       case 1:
         return keywords.some(k => k.trim().length > 0);
       case 2:
-        return country && city;
+        return locationSelected && Boolean(country.trim()) && Boolean(city.trim());
       case 3:
         return results >= 100;
       default:
@@ -133,8 +150,8 @@ const ScrapingForm: React.FC = () => {
                 {currentStep < 4 && (
                   <div className="flex justify-end pt-8">
                     <motion.button
-                      type={currentStep === 3 ? 'submit' : 'button'}
-                      onClick={() => currentStep < 3 && setCurrentStep(prev => prev + 1)}
+                      type="button"
+                      onClick={handleContinue}
                       className="btn-primary"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

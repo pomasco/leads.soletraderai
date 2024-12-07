@@ -1,14 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Loader2 } from 'lucide-react';
 import WaveAnimation from './WaveAnimation';
 import AuthModal from './AuthModal';
 import { supabase } from '../lib/supabase';
+import { useNavigate } from 'react-router-dom';
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const [isSignUp, setIsSignUp] = React.useState(false);
   const [user, setUser] = React.useState(null);
+  const [isEmploying, setIsEmploying] = React.useState(false);
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -36,32 +39,6 @@ const Hero: React.FC = () => {
           initialMode={isSignUp ? 'signup' : 'signin'}
         />
       )}
-      <div className="absolute top-4 right-4 z-10 flex gap-4">
-        {user ? (
-          <motion.button
-            onClick={() => supabase.auth.signOut()}
-            className="border-2 border-seasalt text-seasalt px-4 py-2 rounded-lg 
-                     hover:bg-seasalt hover:text-dark-purple transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Sign Out
-          </motion.button>
-        ) : (
-          <motion.button
-            onClick={() => {
-              setIsSignUp(false);
-              setShowAuthModal(true);
-            }}
-            className="border-2 border-seasalt text-seasalt px-4 py-2 rounded-lg 
-                     hover:bg-seasalt hover:text-dark-purple transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Sign In
-          </motion.button>
-        )}
-      </div>
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -83,17 +60,77 @@ const Hero: React.FC = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
           style={{ marginBottom: '3rem' }}
         >
-          <motion.button
-            className="btn-primary w-48"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setIsSignUp(true);
-              setShowAuthModal(true);
-            }}
-          >
-            Get Started Now
-          </motion.button>
+          {isEmploying ? (
+            <motion.button
+              className="btn-primary w-48 flex items-center justify-center gap-2"
+              disabled
+            >
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Employing...
+            </motion.button>
+          ) : (
+            <motion.button
+              className="btn-primary w-48"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={async () => {
+                if (!user) {
+                  setIsSignUp(true);
+                  setShowAuthModal(true);
+                } else {
+                  setIsEmploying(true);
+                  try {
+                    // Check if agent is already employed
+                    const { data: existingAgent, error: checkError } = await supabase
+                      .from('user_agents')
+                      .select()
+                      .match({ user_id: user.id, agent_id: 'leadsy' });
+
+                    if (checkError) throw checkError;
+
+                    if (!existingAgent || existingAgent.length === 0) {
+                      // Add Leadsy agent to user's dashboard
+                      const { error: insertError } = await supabase
+                        .from('user_agents')
+                        .insert([{
+                          user_id: user.id,
+                          agent_id: 'leadsy',
+                          settings: {},
+                          is_active: true,
+                          last_used: new Date().toISOString(),
+                          created_at: new Date().toISOString()
+                        }]);
+                      
+                      if (insertError) throw insertError;
+                    } else {
+                      // Agent already exists, just update last_used
+                      const { error: updateError } = await supabase
+                        .from('user_agents')
+                        .update({ last_used: new Date().toISOString() })
+                        .match({ user_id: user.id, agent_id: 'leadsy' });
+
+                      if (updateError) throw updateError;
+                    }
+                    
+                    // Ensure navigation happens after successful database operation
+                    // Use navigate for smoother transition
+                    navigate('/dashboard/agents/leadsy');
+                  } catch (error) {
+                    console.error('Error employing agent:', error);
+                    const errorMessage = error instanceof Error 
+                      ? `Failed to employ agent: ${error.message}`
+                      : 'Failed to employ agent. Please try again.';
+                    alert(errorMessage);
+                  } finally {
+                    setIsEmploying(false);
+                  }
+                }
+              }
+            }
+            >
+              {user ? 'Employ Agent' : 'Get Started Now'}
+            </motion.button>
+          )}
           <motion.button
             className="btn-secondary w-48"
             whileHover={{ scale: 1.05 }}

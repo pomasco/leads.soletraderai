@@ -1,24 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { MapPin, Loader2 } from 'lucide-react';
+import { usePlacesAutocomplete, PlaceResult } from '../../lib/places';
 
 interface LocationStepProps {
   country: string;
   setCountry: (country: string) => void;
   city: string;
   setCity: (city: string) => void;
+  onLocationSelect: () => void;
 }
 
-const countries = ['Australia', 'New Zealand', 'United States', 'United Kingdom'];
-const cities = {
-  'Australia': ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
-  'New Zealand': ['Auckland', 'Wellington', 'Christchurch', 'Hamilton'],
-  'United States': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
-  'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Leeds', 'Liverpool']
-};
-
 const LocationStep: React.FC<LocationStepProps> = ({ 
-  country, setCountry, city, setCity 
+  country, setCountry, city, setCity, onLocationSelect
 }) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handlePlaceSelect = (result: PlaceResult) => {
+    setCity(result.city);
+    setCountry(result.country);
+    setSearchValue(result.fullText);
+    setIsLoading(false);
+    onLocationSelect();
+  };
+
+  usePlacesAutocomplete(inputRef, handlePlaceSelect);
+
   return (
     <div className="space-y-6">
       <h3 className="text-2xl font-heading font-medium text-dark-purple">
@@ -30,47 +39,35 @@ const LocationStep: React.FC<LocationStepProps> = ({
           animate={{ opacity: 1, y: 0 }}
         >
           <label className="block text-sm font-medium text-dark-purple mb-2">
-            Country
+            Search Location
           </label>
-          <select
-            value={country}
-            onChange={(e) => {
-              setCountry(e.target.value);
-              setCity('');
-            }}
-            className="w-full px-4 py-3 rounded-lg border-2 border-caribbean-current/20 
-                     focus:border-caribbean-current focus:outline-none transition-colors
-                     text-dark-purple bg-white"
-          >
-            <option value="">Select a country</option>
-            {countries.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <label className="block text-sm font-medium text-dark-purple mb-2">
-            City
-          </label>
-          <select
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            disabled={!country}
-            className="w-full px-4 py-3 rounded-lg border-2 border-caribbean-current/20 
-                     focus:border-caribbean-current focus:outline-none transition-colors
-                     text-dark-purple bg-white disabled:bg-gray-100 
-                     disabled:cursor-not-allowed"
-          >
-            <option value="">Select a city</option>
-            {country && cities[country as keyof typeof cities].map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                setIsLoading(true);
+              }}
+              placeholder="Type to search for a city"
+              className="w-full px-4 py-3 pl-10 rounded-lg border-2 border-caribbean-current/20 
+                       focus:border-caribbean-current focus:outline-none transition-colors
+                       text-dark-purple"
+            />
+            <div className="absolute left-3 top-1/2 -translate-y-1/2">
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 text-caribbean-current/60 animate-spin" />
+              ) : (
+                <MapPin className="w-5 h-5 text-caribbean-current/60" />
+              )}
+            </div>
+          </div>
+          {city && country && (
+            <p className="mt-2 text-sm text-caribbean-current">
+              Selected: {city}, {country}
+            </p>
+          )}
         </motion.div>
       </div>
     </div>

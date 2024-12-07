@@ -1,13 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
+import AuthModal from './AuthModal';
 
 interface User {
   email?: string;
   user_metadata?: {
     full_name?: string;
+    name?: string;
+    email?: string;
   };
 }
 
@@ -61,7 +62,7 @@ const AuthButton: React.FC = () => {
     return (
       <div className="flex items-center gap-4">
         <p className="text-seasalt">
-          Welcome, {user.user_metadata?.full_name || user.email}!
+          Welcome, {user.user_metadata?.full_name || user.user_metadata?.name || user.email}!
           <span className="ml-2">
             You have {credits} credits remaining.
           </span>
@@ -99,32 +100,11 @@ const AuthButton: React.FC = () => {
       </motion.button>
 
       {showAuthModal && (
-        <div className="fixed inset-0 bg-dark-purple/80 flex items-center justify-center z-50">
-          <div className="bg-seasalt p-8 rounded-lg max-w-md w-full">
-            <Auth
-              supabaseClient={supabase}
-              appearance={{
-                theme: ThemeSupa,
-                variables: {
-                  default: {
-                    colors: {
-                      brand: '#246a73',
-                      brandAccent: '#acf7c1',
-                    },
-                  },
-                },
-              }}
-              providers={['google']}
-              onlyThirdPartyProviders
-            />
-            <button
-              onClick={() => setShowAuthModal(false)}
-              className="mt-4 text-dark-purple hover:text-caribbean-current"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          initialMode="signin"
+        />
       )}
     </>
   );
