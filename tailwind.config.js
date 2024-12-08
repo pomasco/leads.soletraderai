@@ -14,6 +14,21 @@ export default {
         'celadon': 'var(--celadon)',
         'seasalt': 'var(--seasalt)',
       },
+      fontWeight: {
+        thin: '200',
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+      },
+      scale: {
+        '80': '0.8',
+      },
+      transformOrigin: {
+        'left': '0% 50%',
+      },
     },
   },
   plugins: [],

@@ -85,6 +85,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 's
           <motion.div
             className="fixed inset-0 m-auto w-[800px] h-[600px] bg-seasalt rounded-2xl 
                      shadow-2xl overflow-hidden z-50"
+            style={{ width: '960px', height: '720px' }}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -192,6 +193,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 's
                   <motion.button
                     type="submit"
                     className="w-full btn-primary"
+                    style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={loading}
@@ -204,22 +206,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 's
               {/* Logo */}
               <div className="flex items-center gap-3 mb-8">
                 <img
-                  src="/images/Logo/soletraderai-logo-white.png"
+                  className="h-16"
                   alt="Sole Trader AI"
-                  className="h-8"
+                  className="h-16"
                 />
               </div>
               
               {/* Sliding Panel */}
               <motion.div
                 className={`bg-gradient-to-br from-dark-purple to-caribbean-current p-12 flex flex-col 
-                         justify-between text-seasalt absolute inset-0 w-1/2 transition-transform duration-500 ${
+                         items-center justify-center text-seasalt absolute inset-0 w-1/2 transition-transform duration-500 ${
                          isSignIn ? 'translate-x-0' : 'translate-x-full'
                          }`}
                 initial={false}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 absolute top-8 left-8">
                   <img
                     src="/images/Logo/soletraderai-logo-white.png"
                     alt="Sole Trader AI"
@@ -227,7 +229,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 's
                   />
                 </div>
 
-                <div className="text-center space-y-8">
+                <div className="text-center space-y-8 mb-12">
                   <h3 className="text-3xl font-heading font-bold">
                     {isSignIn ? 'Hello, Friend!' : 'Welcome Back!'}
                   </h3>
@@ -247,7 +249,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 's
                   </motion.button>
                 </div>
 
-                <div className="absolute bottom-4 right-4">
+                <div className="absolute bottom-8 right-8">
                   <button
                     onClick={onClose}
                     className="text-seasalt/80 hover:text-seasalt transition-colors"

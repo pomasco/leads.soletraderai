@@ -1,46 +1,54 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Check, Zap, Crown } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 const plans = [
   {
-    name: 'Starter Scraper',
-    price: 20,
-    credits: '1,000',
-    color: '#9333EA', // Purple
+    name: 'Pro',
+    price: 2500,
+    period: '/month',
+    description: "Ideal for those who've already got their website up and running and are seeking assistance to enhance and update it further.",
     features: [
-      'Up to 1,000 leads',
-      'CSV export'
-    ],
-    icon: Check
+      '3-5 day turnaround',
+      'Native Development',
+      'Task delivered one-by-one',
+      'Dedicated dashboard',
+      'Updates via Dashboard & Slack'
+    ]
   },
   {
-    name: 'Pro Scraper',
-    price: 90,
-    credits: '10,000',
-    color: '#3B82F6', // Blue
-    popular: true,
+    name: 'Pro Plus',
+    price: 3800,
+    period: '/month',
+    description: "Ideal if you want to build or scale your website fast, with the strategy calls included.",
     features: [
-      'Up to 10,000 leads',
-      'CSV export'
-    ],
-    icon: Crown
+      '1-3 day turnaround',
+      'Monthly strategy call',
+      'Commercial license',
+      'Native Development',
+      'Tasks delivered one-by-one',
+      'Dedicated dashboard',
+      'Updates via Dashboard & Slack'
+    ]
   },
   {
-    name: 'Enterprise Scraper',
-    price: 150,
-    credits: '20,000',
-    color: '#EC4899', // Pink
+    name: 'Custom',
+    description: "If these plans don't fit, let's create one that suits. Customize your subscription for a perfect fit, bigger or smaller!",
+    customTitle: "Let's Talk!",
     features: [
-      'Up to 20,000 leads',
-      'CSV export'
-    ],
-    icon: Zap
+      'Everything in design & development',
+      'Strategy workshop',
+      'Priority support',
+      'Multiple tasks at once',
+      'Ongoing autonomous A/B testing',
+      'Advanced custom development'
+    ]
   }
 ];
 
 const PricingTable: React.FC = () => {
+  const [billingPeriod, setBillingPeriod] = React.useState<'monthly' | 'quarterly'>('monthly');
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -68,7 +76,6 @@ const PricingTable: React.FC = () => {
       }
     }
   };
-
   return (
     <section id="pricing" className="bg-seasalt py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -78,12 +85,36 @@ const PricingTable: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-heading font-bold text-4xl sm:text-5xl text-dark-purple mb-6">
-            Flexible Plans for Every Business
+          <h2 className="font-heading font-bold text-4xl sm:text-5xl text-dark-purple mb-4">
+            Choose your right plan!
           </h2>
-          <p className="text-xl text-dark-purple/80 max-w-3xl mx-auto">
-            Pick the plan that suits your needs. Buy credits and start scraping today!
+          <p className="text-lg text-dark-purple/80 max-w-3xl mx-auto mb-8">
+            Select from best plans, ensuring a perfect match. Need more or less?
+            Customize your subscription for a seamless fit!
           </p>
+          
+          <div className="inline-flex bg-gray-100 rounded-full p-1 mb-12">
+            <button
+              onClick={() => setBillingPeriod('monthly')}
+              className={`px-8 py-2 rounded-full text-sm transition-colors ${
+                billingPeriod === 'monthly' 
+                  ? 'bg-purple-500 text-white' 
+                  : 'text-gray-600'
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setBillingPeriod('quarterly')}
+              className={`px-8 py-2 rounded-full text-sm transition-colors ${
+                billingPeriod === 'quarterly' 
+                  ? 'bg-purple-500 text-white' 
+                  : 'text-gray-600'
+              }`}
+            >
+              Quarterly (save 10%)
+            </button>
+          </div>
         </motion.div>
 
         <motion.div
@@ -97,64 +128,50 @@ const PricingTable: React.FC = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              className={`pricing-card bg-white rounded-2xl shadow-lg ${
-                selectedPlan === index ? 'selected' : ''
+              className={`bg-white rounded-3xl p-8 ${
+                index === 1 ? 'shadow-xl' : 'shadow-lg'
+              } ${
+                index === 2 ? 'bg-purple-50' : ''
               }`}
-              onClick={() => setSelectedPlan(index)}
             >
-              {plan.popular && (
-                <div className="absolute top-4 right-4">
-                  <div className="bg-caribbean-current text-seasalt text-sm font-medium px-3 py-1 rounded-full flex items-center gap-1">
-                    <Crown className="w-4 h-4" />
-                    Popular
-                  </div>
-                </div>
-              )}
-              
-              <div 
-                className="pricing-header"
-                style={{ backgroundColor: plan.color }}
-              >
-                <plan.icon className="w-8 h-8 mb-4" />
-                <h3 className="font-sans font-semibold text-2xl text-dark-purple mb-4">
+              <div className="mb-8">
+                <h3 className="text-xl font-medium text-gray-900 mb-2">
                   {plan.name}
                 </h3>
-                <div className="mb-2">
-                  <span className="text-5xl font-bold">${plan.price}</span>
-                  <span className="ml-2 opacity-80">/ package</span>
-                </div>
-                <div>
-                  <span className="text-2xl font-semibold">
-                    {plan.credits}
-                  </span>
-                  <span className="ml-2 opacity-80">credits</span>
-                </div>
+                <p className="text-gray-600 text-sm">
+                  {plan.description}
+                </p>
               </div>
-              <div className="p-8">
-                <ul className="space-y-4 mb-8 text-dark-purple">
+              {plan.price ? (
+                <div className="mb-8">
+                  <span className="text-5xl font-bold">${plan.price}</span>
+                  <span className="text-gray-500">{plan.period}</span>
+                </div>
+              ) : (
+                <div className="mb-8">
+                  <h4 className="text-3xl font-bold">{plan.customTitle}</h4>
+                </div>
+              )}
+
+              <div>
+                <ul className="space-y-4 mb-8">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-3 text-dark-purple/80">
-                      <Check 
-                        className="w-5 h-5 flex-shrink-0" 
-                        style={{ color: plan.color }}
-                      />
+                    <li key={idx} className="flex items-center gap-3 text-gray-600 text-sm">
+                      <Check className="w-4 h-4 text-purple-500 flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
                 </ul>
                 <motion.button
-                  className={`pricing-button ${
-                    selectedPlan === index ? 'pricing-button-selected' : 'pricing-button-default'
+                  className={`w-full py-3 rounded-lg text-center transition-colors ${
+                    index === 2
+                      ? 'bg-gray-900 text-white hover:bg-gray-800'
+                      : 'bg-purple-500 text-white hover:bg-purple-600'
                   }`}
-                  style={{ 
-                    backgroundColor: selectedPlan === index ? plan.color : 'transparent',
-                    borderColor: plan.color,
-                    color: selectedPlan === index ? '#fcfafa' : plan.color
-                  }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {selectedPlan === index ? 'Selected Plan' : 'Select Plan'}
+                  {index === 2 ? 'Book a Call' : 'Get started'}
                 </motion.button>
               </div>
             </motion.div>

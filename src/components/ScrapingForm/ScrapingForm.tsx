@@ -1,14 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { supabase } from '../../lib/supabase';
-import AuthModal from '../AuthModal';
-import AuthOverlay from '../AuthOverlay';
-import StepMenu from './StepMenu';
-import KeywordsStep from './KeywordsStep';
-import LocationStep from './LocationStep';
-import ResultsStep from './ResultsStep';
-import DownloadStep from './DownloadStep';
+import TestScrapingForm from '../TestScrapingForm/TestScrapingForm';
 
 const ScrapingForm: React.FC = () => {
   const [ref, inView] = useInView({
@@ -16,97 +9,9 @@ const ScrapingForm: React.FC = () => {
     threshold: 0.1
   });
 
-  const [user, setUser] = React.useState(null);
-  const [showAuthModal, setShowAuthModal] = React.useState(false);
-  const [isSignUp, setIsSignUp] = React.useState(false);
-
-  React.useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // Form state
-  const [keywords, setKeywords] = React.useState<string[]>([]);
-  const [country, setCountry] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [results, setResults] = React.useState(100);
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const [locationSelected, setLocationSelected] = React.useState<boolean>(false);
-
-  const handleContinue = () => {
-    if (currentStep < 4) {
-      if (currentStep === 1 && keywords.some(k => k.trim().length > 0)) {
-        setCurrentStep(2);
-      } else if (currentStep === 2 && locationSelected && Boolean(country.trim()) && Boolean(city.trim())) {
-        setCurrentStep(3);
-      } else if (currentStep === 3 && results >= 100) {
-        handleFormSubmission();
-      }
-    }
-  };
-
-  const handleFormSubmission = () => {
-    console.log({ keywords, country, city, results });
-    setCurrentStep(4);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return <KeywordsStep keywords={keywords} setKeywords={setKeywords} />;
-      case 2:
-        return (
-          <LocationStep
-            country={country}
-            setCountry={setCountry}
-            city={city}
-            setCity={setCity}
-            onLocationSelect={() => setLocationSelected(true)}
-          />
-        );
-      case 3:
-        return <ResultsStep results={results} setResults={setResults} />;
-      case 4:
-        return <DownloadStep />;
-      default:
-        return null;
-    }
-  };
-
-  const canProceed = () => {
-    switch (currentStep) {
-      case 1:
-        return keywords.some(k => k.trim().length > 0);
-      case 2:
-        return locationSelected && Boolean(country.trim()) && Boolean(city.trim());
-      case 3:
-        return results >= 100;
-      default:
-        return false;
-    }
-  };
-
   return (
     <section id="scraping-form" className="bg-seasalt py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        {showAuthModal && (
-          <AuthModal
-            isOpen={showAuthModal}
-            onClose={() => setShowAuthModal(false)}
-            initialMode={isSignUp ? 'signup' : 'signin'}
-          />
-        )}
         <motion.div 
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -115,10 +20,10 @@ const ScrapingForm: React.FC = () => {
           className="text-center mb-12 relative"
         >
           <h2 className="font-heading font-bold text-4xl sm:text-5xl text-dark-purple mb-6">
-            Start Generating Leads
+            Try Our Lead Generation
           </h2>
           <p className="text-xl text-dark-purple/80">
-            Follow these simple steps to begin gathering your leads.
+            Test our lead generation capabilities with a free search.
           </p>
         </motion.div>
 
@@ -126,44 +31,9 @@ const ScrapingForm: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl shadow-lg relative overflow-hidden"
+          className="relative"
         >
-          <div className="flex">
-            {!user && (
-              <AuthOverlay
-                onSignIn={() => {
-                  setIsSignUp(false);
-                  setShowAuthModal(true);
-                }}
-                onSignUp={() => {
-                  setIsSignUp(true);
-                  setShowAuthModal(true);
-                }}
-              />
-            )}
-            <StepMenu currentStep={currentStep} onStepClick={setCurrentStep} />
-            <div className="flex-1 p-8">
-              <form onSubmit={handleSubmit} className="h-full flex flex-col">
-                <div className="flex-1">
-                  {renderStepContent()}
-                </div>
-                {currentStep < 4 && (
-                  <div className="flex justify-end pt-8">
-                    <motion.button
-                      type="button"
-                      onClick={handleContinue}
-                      className="btn-primary"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      disabled={!canProceed()}
-                    >
-                      {currentStep === 3 ? 'Generate Leads' : 'Continue'}
-                    </motion.button>
-                  </div>
-                )}
-              </form>
-            </div>
-          </div>
+          <TestScrapingForm />
         </motion.div>
       </div>
     </section>

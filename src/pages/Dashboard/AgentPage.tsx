@@ -1,8 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import ScrapingForm from '../../components/ScrapingForm/ScrapingForm';
+import LeadsyAgent from './Agents/LeadsyAgent';
 import { supabase } from '../../lib/supabase';
 import SideMenu from '../../components/Dashboard/SideMenu';
 
@@ -52,28 +50,7 @@ const AgentPage: React.FC = () => {
   }
 
   if (agentId === 'leadsy') {
-    return (
-      <div className="min-h-screen bg-dark-purple">
-        <SideMenu />
-        <div className="pl-64">
-          <div className="p-8">
-            <div className="flex items-center gap-4 mb-8">
-              <motion.a
-                href="/dashboard"
-                className="text-seasalt hover:text-celadon transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </motion.a>
-              <h1 className="text-3xl font-heading font-bold text-seasalt">
-                {agent.name}
-              </h1>
-            </div>
-            <ScrapingForm />
-          </div>
-        </div>
-      </div>
-    );
+    return <LeadsyAgent />;
   }
 
   return null;

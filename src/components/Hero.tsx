@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import WaveAnimation from './WaveAnimation';
 import AuthModal from './AuthModal';
+import TestScrapingForm from './TestScrapingForm/TestScrapingForm';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ const Hero: React.FC = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [isEmploying, setIsEmploying] = React.useState(false);
+  const [showTestForm, setShowTestForm] = React.useState(false);
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -30,16 +32,54 @@ const Hero: React.FC = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToTestForm = () => {
+    const element = document.getElementById('scraping-form');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden pb-[120px]">
-      {showAuthModal && (
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-          initialMode={isSignUp ? 'signup' : 'signin'}
+    <section className="min-h-screen relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-1/4 left-10 w-72 h-72 bg-caribbean-current rounded-full mix-blend-multiply filter blur-xl opacity-70"
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
         />
-      )}
-      <div className="max-w-7xl mx-auto text-center relative z-10">
+        <motion.div
+          className="absolute bottom-1/4 right-10 w-72 h-72 bg-dark-cyan rounded-full mix-blend-multiply filter blur-xl opacity-70"
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, -50, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 1,
+          }}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 pb-[120px]">
+        {showAuthModal && (
+          <AuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            initialMode={isSignUp ? 'signup' : 'signin'}
+          />
+        )}
+        <div className="max-w-7xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,6 +179,14 @@ const Hero: React.FC = () => {
           >
             Learn More
           </motion.button>
+          <motion.button
+            className="btn-secondary w-48"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={scrollToTestForm}
+          >
+            Try it Free
+          </motion.button>
         </motion.div>
 
         <motion.div 
@@ -149,38 +197,11 @@ const Hero: React.FC = () => {
         >
           <ChevronDown className="w-8 h-8 text-seasalt cursor-pointer" onClick={scrollToHowItWorks} />
         </motion.div>
+        </div>
       </div>
 
+      {/* Wave Animation */}
       <WaveAnimation />
-
-      {/* Animated background elements */}
-      <motion.div
-        className="absolute top-1/4 left-10 w-72 h-72 bg-caribbean-current rounded-full mix-blend-multiply filter blur-xl opacity-70"
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, 50, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-10 w-72 h-72 bg-dark-cyan rounded-full mix-blend-multiply filter blur-xl opacity-70"
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, -50, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse",
-          delay: 1,
-        }}
-      />
     </section>
   );
 };

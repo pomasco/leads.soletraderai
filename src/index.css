@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Ensure fonts are loaded */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -19,31 +19,54 @@
   }
 
   body {
-    @apply font-sans font-normal text-seasalt bg-gradient-to-br from-dark-purple to-dark-cyan min-h-screen;
+    @apply font-sans font-[300] text-sm text-seasalt bg-gradient-to-br from-dark-purple to-dark-cyan min-h-screen;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-light;
+    @apply font-heading font-[200] scale-80 origin-left;
+  }
+  
+  p {
+    @apply font-sans font-[300] text-sm;
+  }
+  
+  .nav-link {
+    @apply relative text-seasalt transition-colors;
+  }
+  
+  .nav-link::before {
+    content: '';
+    @apply absolute left-0 right-0 bottom-0 h-0.5 bg-seasalt scale-x-0 origin-left transition-transform duration-500 ease-out;
+  }
+  
+  .nav-link:hover::before {
+    @apply scale-x-100;
+    transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+  }
+  
+  .stroke-text {
+    -webkit-text-stroke: 2px var(--celadon);
+    color: transparent;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-3 mx-5 bg-celadon text-dark-purple rounded-lg font-medium 
+    @apply px-6 py-3 mx-5 bg-celadon text-dark-purple rounded-lg font-[300] text-sm
            transition-all duration-300 hover:bg-celadon hover:text-dark-purple
            transform hover:scale-105 focus:outline-none focus:ring-2 
            focus:ring-celadon focus:ring-opacity-50;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 mx-5 border-2 border-seasalt text-seasalt rounded-lg font-medium
+    @apply px-6 py-3 mx-5 border-2 border-seasalt text-seasalt rounded-lg font-[300] text-sm
            transition-all duration-300 hover:bg-seasalt hover:text-dark-purple
            transform hover:scale-105 focus:outline-none focus:ring-2
            focus:ring-seasalt focus:ring-opacity-50;
   }
 
   .highlight-text {
-    @apply font-bold relative;
+    @apply font-bold relative scale-80 origin-left;
     background: linear-gradient(120deg, var(--celadon) 0%, var(--caribbean-current) 100%);
     background-clip: text;
     -webkit-background-clip: text;

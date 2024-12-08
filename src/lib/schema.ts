@@ -116,6 +116,22 @@ create policy "Allow users to manage their agents" on public.user_agents
     to authenticated
     using (auth.uid() = user_id);
 
+-- Create test_searches table
+create table if not exists public.test_searches (
+    user_id uuid references auth.users(id) primary key,
+    last_used timestamp with time zone not null,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Set up RLS for test_searches
+alter table public.test_searches enable row level security;
+
+-- Allow users to manage their own test searches
+create policy "Allow users to manage their test searches" on public.test_searches
+    for all
+    to authenticated
+    using (auth.uid() = user_id);
+
 -- Create function to initialize agents schema
 create or replace function public.initialize_agents_schema()
 returns void
