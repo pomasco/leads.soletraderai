@@ -7,7 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Upcoming features and improvements planned
+- Webhook integration for lead generation results
+- Improved location selection with Google Places API
+- Enhanced form validation and error handling
+- Real-time form feedback and status indicators
+
+### Changed
+- Updated ScrapingForm UI for better user experience
+- Improved keyword input with Enter/Tab support
+- Enhanced location selection with confirmation step
+
+### Fixed
+- Location selection validation
+- Form submission error handling
+- Supabase authentication error messages
 
 ## [1.2.0] - 2023-12-08
 ### Added
