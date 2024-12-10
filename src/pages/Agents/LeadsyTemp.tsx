@@ -128,7 +128,8 @@ const LeadsyTemp: React.FC = () => {
       <Navigation />
       
       <AgentHero
-        title="Leadsy - Intelligent Lead Generation"
+        agentName="Leadsy"
+        agentTitle="Lead Generation Specialist"
         description="Transform your business growth with AI-powered lead generation from Google Maps. Get verified business contacts with smart filtering and validation."
         icon={<Bot className="w-10 h-10 text-caribbean-current" />}
       />

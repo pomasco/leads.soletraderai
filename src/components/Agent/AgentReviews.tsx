@@ -23,7 +23,7 @@ const AgentReviews: React.FC<AgentReviewsProps> = ({ reviews }) => {
 
   return (
     <section id="agent-reviews" className="bg-seasalt py-20">
-      <div className="container mx-auto px-4">
+      <div className="container max-w-7xl mx-auto px-4">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -34,7 +34,7 @@ const AgentReviews: React.FC<AgentReviewsProps> = ({ reviews }) => {
           <h2 className="font-heading font-bold text-4xl text-dark-purple mb-4">
             What Our Users Say
           </h2>
-          <p className="text-xl text-dark-purple/80 max-w-2xl mx-auto">
+          <p className="text-xl text-dark-purple max-w-2xl mx-auto">
             Read testimonials from businesses using our AI agent
           </p>
         </motion.div>
@@ -61,7 +61,7 @@ const AgentReviews: React.FC<AgentReviewsProps> = ({ reviews }) => {
                 ))}
               </div>
 
-              <p className="text-dark-purple/80 mb-6">
+              <p className="text-dark-purple mb-6">
                 "{review.content}"
               </p>
 
@@ -82,7 +82,7 @@ const AgentReviews: React.FC<AgentReviewsProps> = ({ reviews }) => {
                   <h4 className="font-heading font-bold text-dark-purple">
                     {review.author}
                   </h4>
-                  <p className="text-dark-purple/60 text-sm">
+                  <p className="text-dark-purple text-sm">
                     {review.company}
                   </p>
                 </div>

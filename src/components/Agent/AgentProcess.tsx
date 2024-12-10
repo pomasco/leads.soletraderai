@@ -21,7 +21,7 @@ const AgentProcess: React.FC<AgentProcessProps> = ({ steps }) => {
 
   return (
     <section id="agent-process" className="bg-dark-purple py-20">
-      <div className="container mx-auto px-4">
+      <div className="container max-w-7xl mx-auto px-4">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}

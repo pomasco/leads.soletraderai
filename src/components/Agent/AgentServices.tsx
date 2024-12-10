@@ -21,18 +21,18 @@ const AgentServices: React.FC<AgentServicesProps> = ({ services }) => {
 
   return (
     <section id="agent-services" className="bg-seasalt py-20">
-      <div className="container mx-auto px-4">
+      <div className="container max-w-7xl mx-auto px-4">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-16 max-w-3xl mx-auto"
         >
-          <h2 className="font-heading font-bold text-4xl text-dark-purple mb-4">
+          <h2 className="font-heading font-bold text-4xl text-dark-purple mb-4 !transform-none">
             What This Agent Can Do
           </h2>
-          <p className="text-xl text-dark-purple/80 max-w-2xl mx-auto">
+          <p className="text-xl text-dark-purple">
             Explore the comprehensive set of services and capabilities
           </p>
         </motion.div>
@@ -49,14 +49,14 @@ const AgentServices: React.FC<AgentServicesProps> = ({ services }) => {
               <h3 className="text-xl font-heading font-bold text-dark-purple mb-4">
                 {service.title}
               </h3>
-              <p className="text-dark-purple/80 mb-6">
+              <p className="text-dark-purple mb-6">
                 {service.description}
               </p>
               <ul className="space-y-3">
                 {service.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-caribbean-current flex-shrink-0 mt-0.5" />
-                    <span className="text-dark-purple/80">{feature}</span>
+                    <span className="text-dark-purple">{feature}</span>
                   </li>
                 ))}
               </ul>

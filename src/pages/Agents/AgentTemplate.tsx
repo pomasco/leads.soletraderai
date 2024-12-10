@@ -5,7 +5,8 @@ import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
 
 interface AgentTemplateProps {
-  title: string;
+  agentName: string;
+  agentTitle: string;
   description: string;
   features: string[];
   heroContent?: React.ReactNode;
@@ -13,7 +14,8 @@ interface AgentTemplateProps {
 }
 
 const AgentTemplate: React.FC<AgentTemplateProps> = ({
-  title,
+  agentName,
+  agentTitle,
   description,
   features,
   heroContent,
@@ -39,7 +41,10 @@ const AgentTemplate: React.FC<AgentTemplateProps> = ({
             className="max-w-4xl"
           >
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl mb-6 text-seasalt">
-              {title}
+              {agentName}
+            </h1>
+            <h1 className="font-heading text-2xl sm:text-3xl lg:text-3xl mb-6 text-seasalt">
+              {agentTitle}
             </h1>
             <p className="text-xl text-seasalt/80 mb-12 max-w-2xl">
               {description}
