@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Agent template system for standardized agent pages
+- Comprehensive agent page sections:
+  - Hero/Introduction
+  - Compliance alerts
+  - Services overview
+  - Work process visualization
+  - Video tutorials
+  - Test/Trial section
+  - Performance metrics
+  - User reviews
+  - Call-to-action
+- Improved navigation with container-based layout
+- Enhanced UI with backdrop blur effects
+
+### Changed
+- Refactored navigation bar with scroll-based styling
+- Updated logo switching based on scroll position
+- Improved content container alignment
+- Enhanced agent grid display with template version
+
+### Fixed
+- Navigation bar opacity and blur effects
+- Content alignment within containers
+- Agent template component structure
+- File organization for agent-related components
+
+## [1.3.0] - 2023-12-10
+### Added
 - Webhook integration for lead generation results
 - Improved location selection with Google Places API
 - Enhanced form validation and error handling
@@ -78,7 +106,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User authentication flow
 - Protected API endpoints
 
-[Unreleased]: https://github.com/yourusername/project/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/yourusername/project/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/yourusername/project/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/yourusername/project/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/yourusername/project/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yourusername/project/releases/tag/v1.0.0

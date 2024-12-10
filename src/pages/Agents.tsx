@@ -17,6 +17,14 @@ const defaultAgents = [
     icon: Bot
   },
   {
+    id: 'leadsy-temp',
+    name: 'Leadsy (Template)',
+    description: 'Template version of Leadsy with standardized layout and components. Use this as a reference for creating new agent pages.',
+    category: 'template',
+    features: ['Standard Layout', 'Reusable Components', 'Consistent Styling'],
+    icon: Bot
+  },
+  {
     id: 'contentor',
     name: 'Contentor',
     description: 'Create engaging content optimized for your target audience and SEO.',
